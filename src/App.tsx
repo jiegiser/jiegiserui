@@ -4,7 +4,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Button btnType={ButtonType.Primary}>Primary</Button>
+        <Button btnType={ButtonType.Primary} className="custom">Primary</Button>
         <Button btnType={ButtonType.Default}>Default</Button>
         <Button btnType={ButtonType.Default} disabled>Disabled</Button>
         <Button btnType={ButtonType.Primary} size={ButtonSize.Large}>Large(Primary)</Button>
