@@ -11,3 +11,23 @@
 // layout
 @import "reboot"
 ```
+然后在 index.tsx 中进行引入我们的初始化样式：
+
+```ts
+import './styles/index.scss';
+```
+
+Sass 作用域是从上到下的，在 button 的样式中引用了 variables 中定义的变量，就要放在下面：
+```css
+// config
+@import "variables";
+
+// layout
+@import "reboot";
+
+// button
+@import "../components/Button/style";
+```
+
+2. 使用 classnames 库
+安装 npm install classnames --save; npm install @types/classnames --save
