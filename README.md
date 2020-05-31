@@ -208,5 +208,24 @@ describe('test Button component', () => {
     expect(disabledProps.onClick).not.toHaveBeenCalled()
   })
 })
+```
 
+7. 如果 ts 提示一个变量有两种类型报错
+
+如果提示报错，需要进行判断：
+```ts
+  const passedContext: IMenuContext = {
+    // currentActive 可能为 number 或者 undefined ，这里需要做一个判断
+    index: currentActive ? currentActive : 0,
+    onSelect: handleClick
+  }
+```
+8. type
+
+type 类型，可以类似 Enum 类型使用：
+```ts
+type MenuMode = 'horizontal' | 'vertial'
+export interface MenuProps {
+  mode?: MenuMode
+}
 ```
