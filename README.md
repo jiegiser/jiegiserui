@@ -229,3 +229,22 @@ export interface MenuProps {
   mode?: MenuMode
 }
 ```
+9. 测试中的 beforeEach 钩子函数
+
+如果我们写一个测试用例的时候，每个 case 中都需要一个相同的变量，我们可以将变量放在 beforeEach 函数中：
+```ts
+let wrapper: RenderResult, menuElement: HTMLElement, activeElement: HTMLElement, disabledElement: HTMLElement
+describe('test Menu and MenuItem component', () => {
+  // 每个 case 执行的时候都会首先进入这个函数，公用的属性以及方法可以写在这里
+  beforeEach(() => {
+    wrapper = render(generateMenu(testProps))
+    // 取 Menu 最外层的元素，需要给 Menu 添加一个 data-testid 属性
+    menuElement = wrapper.getByTestId('test-menu')
+    // 也可以这样
+    wrapper.container.getElementsByClassName('jiegiser-menu')
+  })
+})
+```
+10. jest 测试中的 cleanup
+使用 cleanup 可以清除之前 case 渲染的的 dom 元素，比如我们在 beforeEach 中渲染的元素。
+其他的用例在调用 beforeEach 中渲染的元素，会自动执行 cleanup 方法。
