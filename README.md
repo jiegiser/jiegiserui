@@ -248,3 +248,77 @@ describe('test Menu and MenuItem component', () => {
 10. jest 测试中的 cleanup
 使用 cleanup 可以清除之前 case 渲染的的 dom 元素，比如我们在 beforeEach 中渲染的元素。
 其他的用例在调用 beforeEach 中渲染的元素，会自动执行 cleanup 方法。
+11. 将属性混入到实例中
+遍历 this.props.children 使用 React.Children.map，复制属性 React.cloneElement 方法
+```ts
+  const renderChildren = () => {
+    return React.Children.map(children, (child, index) => {
+      const childElement = child as React.FunctionComponentElement<MenuItemProps>
+      const { displayName } = childElement.type
+      if (displayName === 'MenuItem' || displayName === 'SubMenu') {
+        // return child
+        return React.cloneElement(childElement, {
+          index: index.toString()
+        })
+      } else {
+        console.error("Warning: Menu has a child which is not a MenuItem component")
+      }
+    })
+  }
+```
+12. css 中的 :scope 伪类
+:scope 属于 CSS 伪类，它表示作为选择器要匹配的参考点的元素。当需要获取已检索到的的直接后代元素时，:scope 伪类很有用。
+
+```js
+var context = document.getElementById('context');
+var selected = context.querySelectorAll(':scope > div');
+
+document.getElementById('results').innerHTML = Array.prototype.map.call(selected, function (element) {
+    return '#' + element.getAttribute('id');
+}).join(', ');
+```
+```html
+<div id="context">
+    <div id="element-1">
+        <div id="element-1.1"></div>
+        <div id="element-1.2"></div>
+    </div>
+    <div id="element-2">
+        <div id="element-2.1"></div>
+    </div>
+</div>
+<p>
+    Selected elements ids :
+    <span id="results"></span>
+</p>
+```
+结果：
+Selected elements ids : #element-1, #element-2
+
+13. 测试代码中解决异步问题
+如果我们写的代码中有异步操作，直接写 case 会不通过，我们需要引入 wait 方法：
+我们的代码中有异步操作：
+```ts
+  const handleMouse = (e: React.MouseEvent, toggle: boolean) => {
+    clearTimeout(timer)
+    e.preventDefault()
+    timer = setTimeout(() => {
+      setOpen(toggle)
+    }, 300)
+  }
+```
+```ts
+import { render, RenderResult, fireEvent, wait } from '@testing-library/react'
+let wrapper: RenderResult, menuElement: HTMLElement, activeElement: HTMLElement, disabledElement: HTMLElement
+describe('test Menu and MenuItem component', () => {
+  it('should show dropdown items when hover on subMenu', async () => {
+    // queryByText 会返回 HTMLElement 或者 none
+    expect(wrapper.queryByText('drop1')).not.toBeVisible()
+    const dropdownElement = wrapper.getByText('dropdown')
+    fireEvent.mouseEnter(dropdownElement)
+    await wait(() => {
+      expect(wrapper.queryByText('drop1')).toBeVisible()
+    })
+  })
+})
+```
