@@ -72,27 +72,32 @@ type AnchorButtonProps = BaseButtionProps & React.AnchorHTMLAttributes<HTMLEleme
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 ```
 
-4. ...restProps
+4. scss 中的 @each 、Maps
 
-使用 ...restProps 取出剩余 props 传入的参数：
-
-```ts
-  const { 
-    btnType,
-    ...restProps
-   } = props
-    return (
-    <a
-      className = { classes }
-      href={href}
-      // 其他属性
-      {...restProps}
-    >
-      { children }
-    </a>
-    )
+```scss
+$sizes: 40px, 50px, 80px;
+@each $size in $sizes {
+  // 注意这里选择器的名称要访问变量需要使用 #{} 来包裹
+  .icon-#{$size} {
+    font-size: $size;
+    height: $size;
+    width: $size;
+  }
+}
 ```
+Maps 类似 js 中的 Object，键值对。使用圆括号来创建
+```scss
+$icons: ("eye": "\f112", "start": "\f12e", "stop": "\f12f");
 
+@each $name, $glyph in $icons {
+  .icon-#{$name}:before {
+    display: inline-block;
+    font-family: "Icon Font";
+    content: $glyph;
+  }
+}
+
+```
 5. 增加测试用例
 新建 jest.test.js ,react 框架中包含 jest 工具。
 ```js
@@ -322,3 +327,7 @@ describe('test Menu and MenuItem component', () => {
   })
 })
 ```
+
+14. display
+
+css 中的 display: none 到 display: block 的变化中添加 translate 是不起作用的

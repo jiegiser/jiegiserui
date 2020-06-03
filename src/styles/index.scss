@@ -4,6 +4,9 @@
 // layout
 @import "reboot";
 
+// animation
+@import "animation";
+
 // mixin
 @import "mixin";
 
@@ -11,5 +14,7 @@
 @import "../components/Button/style";
 
 // menu
-
 @import "../components/Menu/style";
+
+// icom
+@import "../components/Icon/style";

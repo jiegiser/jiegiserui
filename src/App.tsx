@@ -1,12 +1,24 @@
-import React from 'react';
+import React from 'react'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import Button, { ButtonType, ButtonSize } from './components/Button/button'
 import Menu from './components/Menu/menu'
 import MenuItem from './components/Menu/menuItem'
 import SubMenu from './components/Menu/subMenu'
+// // 组件
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// // 具体的图标
+// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+
+import Icon from './components/Icon/icon'
+
+library.add(fas)
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/* <FontAwesomeIcon icon={faCoffee} size="10x" /> */}
+        <Icon icon="coffee" theme="danger" size="10x" />
         <Menu defaultIndex='0' onSelect={(index) => {console.log(index)}}>
           <MenuItem>
             cool link 1
