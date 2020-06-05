@@ -331,3 +331,5 @@ describe('test Menu and MenuItem component', () => {
 14. css 中 display 以及 react 中的动画
 
 css 中的 display: none 到 display: block 的变化中添加 translate 是不起作用的;所以我们在设置一个元素从无到有的渐变只能通过 opacity 属性来实现，但是这个属性只是设置元素的透明度，元素本身还是显示在那里，存在于 dom 结构中。这时候我们可以借助 react 的一些动画实现的库，这里使用 react-transition-group ，他在元素从无到有的生命周期上添加了 class 来控制动画；
+
+> transition 属性不会继承

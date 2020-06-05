@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import Button, { ButtonType, ButtonSize } from './components/Button/button'
+import Button from './components/Button/button'
 import Menu from './components/Menu/menu'
 import MenuItem from './components/Menu/menuItem'
 import SubMenu from './components/Menu/subMenu'
@@ -9,11 +9,12 @@ import SubMenu from './components/Menu/subMenu'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // // 具体的图标
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-
+import Transition from './components/Transition/transition'
 import Icon from './components/Icon/icon'
-
+// 将所有的图标都进行加载
 library.add(fas)
 function App() {
+  const [ show, setShow ] = useState(false)
   return (
     <div className="App">
       <header className="App-header">
@@ -65,13 +66,46 @@ function App() {
           </MenuItem>
         </Menu>
         <br/>
-        <Button btnType={ButtonType.Primary} className="custom">Primary</Button>
-        <Button btnType={ButtonType.Default}>Default</Button>
-        <Button btnType={ButtonType.Default} disabled>Disabled</Button>
-        <Button btnType={ButtonType.Primary} size={ButtonSize.Large}>Large(Primary)</Button>
-        <Button btnType={ButtonType.Danger} size={ButtonSize.Small}>Small(Danger)</Button>
-        <Button btnType={ButtonType.Link} href="http://www.baidu.com" disabled>Link(disabled)</Button>
-        <Button btnType={ButtonType.Link} href="http://www.baidu.com" >Link</Button>
+        <Button size='lg' onClick={() => {setShow(!show)}}>Toggle</Button>
+        <Transition
+          in={show}
+          timeout={300}
+          animation="zoom-in-left"
+        >
+          <div>
+            <p>
+              Edit <code>src/App/tsx</code> and asve to reload.
+            </p>
+            <p>
+              Edit <code>src/App/tsx</code> and asve to reload.
+            </p>
+            <p>
+              Edit <code>src/App/tsx</code> and asve to reload.
+            </p>
+            <p>
+              Edit <code>src/App/tsx</code> and asve to reload.
+            </p>
+            <p>
+              Edit <code>src/App/tsx</code> and asve to reload.
+            </p>
+          </div>
+        </Transition>
+        <Transition
+          in={show}
+          timeout={300}
+          animation="zoom-in-left"
+          wrapper
+        >
+          <Button btnType="primary" size="lg">A large Button</Button>
+        </Transition>
+        <br/>
+        <Button btnType={'primary'} className="custom">Primary</Button>
+        <Button btnType={'default'}>Default</Button>
+        <Button btnType={'default'} disabled>Disabled</Button>
+        <Button btnType={'primary'} size={'lg'}>Large(Primary)</Button>
+        <Button btnType={'danger'} size={'sm'}>Small(Danger)</Button>
+        <Button btnType={'link'} href="http://www.baidu.com" disabled>Link(disabled)</Button>
+        <Button btnType={'link'} href="http://www.baidu.com" >Link</Button>
         <br/>
         <p>
           Edit <code>src/App.tsx</code> and save to reload.

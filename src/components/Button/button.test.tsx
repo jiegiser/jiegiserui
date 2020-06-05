@@ -7,8 +7,8 @@ const defaultProps = {
 }
 
 const testTypes: ButtonProps = {
-  btnType: ButtonType.Primary,
-  size: ButtonSize.Large,
+  btnType: 'primary',
+  size: 'lg',
   className: 'klass'
 }
 
@@ -58,7 +58,7 @@ describe('test Button component', () => {
   })
   it('should render a link when btnType equals link and href is provided', () => {
     // 渲染组件
-    const wrapper = render(<Button btnType={ButtonType.Link} href="http://dddd.com">Link</Button>)
+    const wrapper = render(<Button btnType={'link'} href="http://dddd.com">Link</Button>)
     const element = wrapper.getByText('Link')
     // 判断组件是否在文档中
     expect(element).toBeInTheDocument()
