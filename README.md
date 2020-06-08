@@ -339,3 +339,21 @@ css 中的 display: none 到 display: block 的变化中添加 translate 是不�
 首先进行安装：npx -p @storybook/cli sb init
 
 > https://storybook.js.org/docs/configurations/typescript-config/
+
+首先配置 storybook 的 ts 开发环境：
+1. 修改 storybook 的配置文件：
+
+修改 .storybook 下的 main.js 文件
+只需要将 stories.js 修改为 stories.tsx
+```js
+module.exports = {
+  stories: ['../src/**/*.stories.tsx'],
+  addons: [
+    '@storybook/preset-create-react-app',
+    '@storybook/addon-actions',
+    '@storybook/addon-links',
+  ]
+};
+
+```
+然后将 src/stories 下面的所有文件都修改为 tsx 后缀的文件就可以了。
