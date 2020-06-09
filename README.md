@@ -453,3 +453,4 @@ addDecorator(CenterDecorator);
 ```
 
 > 更多 addons ：https://storybook.js.org/addons/
+> https://storybook.js.org/docs/addons/introduction/#1-decorators
