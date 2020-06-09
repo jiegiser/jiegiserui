@@ -5,7 +5,8 @@
 > https://usehooks.com/page/2
 
 
-1. css 中的 import 命令，但是每次调用的时候，都会创建一个额外的 http 请求。但是 scss 的 import 是将文件包含在 css 中，不需要额外的 http 请求。我们以 _ 开头定义文件， scss 是不会将这些文件编译到 css 文件中；没法编译成单独的 css 文件，只能被导入；但是我们在导入这些文件的时候，不需要添加下划线。
+### scss 中的 import
+css 中的 import 命令，每次调用的时候，都会创建一个额外的 http 请求。但是 scss 的 import 是将文件包含在 css 中，不需要额外的 http 请求。我们以 _ 开头定义文件， scss 是不会将这些文件编译到 css 文件中；没法编译成单独的 css 文件，只能被导入；但是我们在导入这些文件的时候，不需要添加下划线。
 
 ```css
 // config
@@ -32,7 +33,7 @@ Sass 作用域是从上到下的，在 button 的样式中引用了 variables �
 @import "../components/Button/style";
 ```
 
-2. 使用 classnames 库
+### 使用 classnames 库
 安装 npm install classnames --save; npm install @types/classnames --save
 使用：
 ```ts
@@ -54,7 +55,7 @@ return (
 </a>
 )
 ```
-3. 使用联合类型合并 DOM 原生属性以及新增属性;使用 Partial 将属性变为可选属性
+### 使用联合类型合并 DOM 原生属性以及新增属性;使用 Partial 将属性变为可选属性
 
 ```ts
 interface BaseButtionProps {
@@ -72,7 +73,7 @@ type AnchorButtonProps = BaseButtionProps & React.AnchorHTMLAttributes<HTMLEleme
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 ```
 
-4. scss 中的 @each 、Maps
+### scss 中的 @each 、Maps
 
 ```scss
 $sizes: 40px, 50px, 80px;
@@ -98,7 +99,7 @@ $icons: ("eye": "\f112", "start": "\f12e", "stop": "\f12f");
 }
 
 ```
-5. 增加测试用例
+### 增加测试用例
 新建 jest.test.js ,react 框架中包含 jest 工具。
 ```js
 // 一个用例。每个用例测试一个独立的功能点
@@ -124,7 +125,7 @@ test('test object', () => {
 ```
 然后运行命令 npx jest jest.test.js，可以添加 --watch 命令，让他一直运行：npx jest jest.test.js --watch
 
-6. 使用 testing-library 工具进行测试 react 组件库相关用例
+### 使用 testing-library 工具进行测试 react 组件库相关用例
 
 react-script 3.3.0 版本已经将 testing-library 添加了依赖，如果低于这个版本的需要自己安装，运行命令
 npm install --save-dev @testing-library/react 这个只是针对类型的断言，还有一个 @testing-library/jest-dom
@@ -215,7 +216,7 @@ describe('test Button component', () => {
 })
 ```
 
-7. 如果 ts 提示一个变量有两种类型报错
+### 如果 ts 提示一个变量有两种类型报错
 
 如果提示报错，需要进行判断：
 ```ts
@@ -225,7 +226,7 @@ describe('test Button component', () => {
     onSelect: handleClick
   }
 ```
-8. type
+### type
 
 type 类型，可以类似 Enum 类型使用：
 ```ts
@@ -234,7 +235,7 @@ export interface MenuProps {
   mode?: MenuMode
 }
 ```
-9. 测试中的 beforeEach 钩子函数
+### 测试中的 beforeEach 钩子函数
 
 如果我们写一个测试用例的时候，每个 case 中都需要一个相同的变量，我们可以将变量放在 beforeEach 函数中：
 ```ts
@@ -250,10 +251,10 @@ describe('test Menu and MenuItem component', () => {
   })
 })
 ```
-10. jest 测试中的 cleanup
+### jest 测试中的 cleanup
 使用 cleanup 可以清除之前 case 渲染的的 dom 元素，比如我们在 beforeEach 中渲染的元素。
 其他的用例在调用 beforeEach 中渲染的元素，会自动执行 cleanup 方法。
-11. 将属性混入到实例中
+### 将属性混入到实例中
 遍历 this.props.children 使用 React.Children.map，复制属性 React.cloneElement 方法
 ```ts
   const renderChildren = () => {
@@ -271,7 +272,7 @@ describe('test Menu and MenuItem component', () => {
     })
   }
 ```
-12. css 中的 :scope 伪类
+### css 中的 :scope 伪类
 :scope 属于 CSS 伪类，它表示作为选择器要匹配的参考点的元素。当需要获取已检索到的的直接后代元素时，:scope 伪类很有用。
 
 ```js
@@ -300,7 +301,7 @@ document.getElementById('results').innerHTML = Array.prototype.map.call(selected
 结果：
 Selected elements ids : #element-1, #element-2
 
-13. 测试代码中解决异步问题
+### 测试代码中解决异步问题
 如果我们写的代码中有异步操作，直接写 case 会不通过，我们需要引入 wait 方法：
 我们的代码中有异步操作：
 ```ts
@@ -328,13 +329,13 @@ describe('test Menu and MenuItem component', () => {
 })
 ```
 
-14. css 中 display 以及 react 中的动画
+### css 中 display 以及 react 中的动画
 
 css 中的 display: none 到 display: block 的变化中添加 translate 是不起作用的;所以我们在设置一个元素从无到有的渐变只能通过 opacity 属性来实现，但是这个属性只是设置元素的透明度，元素本身还是显示在那里，存在于 dom 结构中。这时候我们可以借助 react 的一些动画实现的库，这里使用 react-transition-group ，他在元素从无到有的生命周期上添加了 class 来控制动画；
 
 > transition 属性不会继承
 
-15. storybook 的使用
+### storybook 的使用
 
 首先进行安装：npx -p @storybook/cli sb init
 
@@ -357,3 +358,96 @@ module.exports = {
 
 ```
 然后将 src/stories 下面的所有文件都修改为 tsx 后缀的文件就可以了。
+
+如果需要加载全局样式：
+```js
+// '../src/styles/index.scss' 直接在这里配置即可
+module.exports = {
+  stories: ['../src/**/*.stories.tsx', '../src/styles/index.scss'],
+  addons: [
+    '@storybook/preset-create-react-app',
+    '@storybook/addon-actions',
+    '@storybook/addon-links',
+  ]
+};
+
+```
+
+增加自己的 story，在自己的组件新建一个 button.stories.tsx 文件：
+
+```ts
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+
+import Button from './button'
+
+const defaultButton = () => (
+  <Button onClick={action('clicked')}>default button</Button>
+)
+// 第一个参数为左侧菜单父级菜单名， 第二个参数为固定参数 module
+storiesOf('Button Component', module)
+// 给父级菜单添加子级菜单，也就是添加组件
+// 第一个参数为菜单名，第二个参数为一个函数，返回组件
+  .add('默认 Button', defaultButton)
+```
+
+storybook 添加装饰器，比如我们可以设置我们组件显示的外面的样式：
+通过 addDecorator(CenterDecorator) 方法进行添加装饰器。
+```ts
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+
+import Button from './button'
+
+const styles: React.CSSProperties = {
+  textAlign: 'center'
+}
+const CenterDecorator = (storyFn: any) => (
+<div style={styles}>{storyFn()}</div>
+)
+
+const defaultButton = () => (
+  <Button onClick={action('clicked')}>default button</Button>
+)
+
+const buttonWithSize = () => (
+  <>
+    <Button size="lg"> large button </Button>
+    <Button size="sm"> small button </Button>
+  </>
+)
+
+const buttonWithType = () => (
+  <>
+    <Button btnType="primary"> primary button </Button>
+    <Button btnType="danger"> danger button </Button>
+    <Button btnType="link" href="https://baidu.com"> link button </Button>
+  </>
+)
+// 第一个参数为左侧菜单父级菜单名， 第二个参数为固定参数 module
+storiesOf('Button Component', module)
+  .addDecorator(CenterDecorator)
+// 给父级菜单添加子级菜单，也就是添加组件
+// 第一个参数为菜单名，第二个参数为一个函数，返回组件
+  .add('默认 Button', defaultButton)
+```
+如果需要全局添加，可以在 .storybook 中新建 preview.js :
+```js
+// './Decorator/Center'
+import React from 'react'
+
+const styles: React.CSSProperties = {
+  textAlign: 'center'
+}
+const CenterDecorator = (storyFn: any) => (
+<div style={styles}>{storyFn()}</div>
+)
+export default CenterDecorator
+
+// preview.js
+import CenterDecorator from './Decorator/Center'
+import { addDecorator } from '@storybook/react';
+addDecorator(CenterDecorator);
+```
