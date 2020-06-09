@@ -451,3 +451,5 @@ import CenterDecorator from './Decorator/Center'
 import { addDecorator } from '@storybook/react';
 addDecorator(CenterDecorator);
 ```
+
+> 更多 addons ：https://storybook.js.org/addons/
