@@ -1,14 +1,18 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, CSSProperties, FC, Children, FunctionComponentElement, cloneElement } from 'react'
 import classNames from 'classnames'
 import { MenuItemProps } from './menuItem'
 type SelectCallback = (selectedIndex: string) => void
 type MenuMode = 'horizontal' | 'vertial'
 export interface MenuProps {
+  /**设置默认选中的菜单项从 0 开始 */
   defaultIndex?: string
   className?: string
+  /**菜单的模式，默认为 horizontal 水平模式，可选值：vertial 垂直模式 */
   mode?: MenuMode
-  style?: React.CSSProperties
+  style?: CSSProperties
+  /**点击菜单的回调函数 */
   onSelect?: SelectCallback
+  /**默认选中子菜单的 index ，从 0 开始 */
   defaultOpenSubMenus?: string[]
 }
 
@@ -21,7 +25,17 @@ interface IMenuContext {
 export const MenuContext = createContext<IMenuContext>({
   index: '0'
 })
-const Menu: React.FC<MenuProps> = (props) => {
+/**
+ * 页面中最常用的菜单元素，适合于完成特定的交互
+ * 
+ * > ### 引用方法
+ *   
+ * ~~~js
+ * import { Menu, MenuItem } from 'jiegiserUI'
+ * ~~~
+ * @param props 参数
+ */
+export const Menu: FC<MenuProps> = (props) => {
   const { className, mode, style, children, defaultIndex, onSelect, defaultOpenSubMenus } = props
   const [ currentActive, setActive ] = useState(defaultIndex)
   const classes = classNames('jiegiser-menu', className, {
@@ -42,12 +56,12 @@ const Menu: React.FC<MenuProps> = (props) => {
     defaultOpenSubMenus
   }
   const renderChildren = () => {
-    return React.Children.map(children, (child, index) => {
-      const childElement = child as React.FunctionComponentElement<MenuItemProps>
+    return Children.map(children, (child, index) => {
+      const childElement = child as FunctionComponentElement<MenuItemProps>
       const { displayName } = childElement.type
       if (displayName === 'MenuItem' || displayName === 'SubMenu') {
         // return child
-        return React.cloneElement(childElement, {
+        return cloneElement(childElement, {
           index: index.toString()
         })
       } else {
@@ -68,4 +82,4 @@ Menu.defaultProps = {
   mode: 'horizontal',
   defaultOpenSubMenus: []
 }
-export default Menu
+export default Menu;

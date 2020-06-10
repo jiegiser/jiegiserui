@@ -9,8 +9,10 @@ export interface SubMenuProps {
   title: string
   className?: string
 }
-
-const SubMenu: React.FC<SubMenuProps> = ({ index, title, children, className }) => {
+const iconStyle: React.CSSProperties = {
+  marginLeft: '5px'
+}
+export const SubMenu: React.FC<SubMenuProps> = ({ index, title, children, className }) => {
   const context = useContext(MenuContext)
   const openedSubMenus = context.defaultOpenSubMenus as Array<string>
   const isOpened = (index && context.mode === 'vertial') ? openedSubMenus.includes(index) : false
@@ -69,7 +71,7 @@ const SubMenu: React.FC<SubMenuProps> = ({ index, title, children, className }) 
     <li key={index} className={classes} {...hoverEvents}>
       <div className="submenu-title" {...clickEvents}>
         {title}
-        <Icon icon="angle-down" className="arrow-icon" />
+        <Icon icon="angle-down" className="arrow-icon" style={iconStyle} />
       </div>
       {renderChildren()}
     </li>
@@ -77,4 +79,4 @@ const SubMenu: React.FC<SubMenuProps> = ({ index, title, children, className }) 
 }
 
 SubMenu.displayName = 'SubMenu'
-export default SubMenu
+export default SubMenu;
