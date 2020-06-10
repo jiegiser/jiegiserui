@@ -505,4 +505,82 @@ storiesOf('Button Component', module)
 ```
 
 ### react-docgen
-一个文档生成器，
+一个文档生成器，根据组件的一些属性，生成表格；
+首先需要改造自己的组件，将一些属性通过 import 的方法进行引入：
+```js
+// 通过 import 的方式导出所有属性
+import React, { FC, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
+// 需要将自己的组件导出
+export const Button: FC<ButtonProps> = (props) => {
+
+}
+// 注意这里需要添加一个分号
+export default Button;
+```
+在 webpack.config.js 中添加：
+```js
+module.exports = ({ config }) => {
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    use: [
+      {
+        loader: require.resolve("babel-loader"),
+        options: {
+          presets: [require.resolve("babel-preset-react-app")]
+        }
+      },
+      // 添加 loader 
+      {
+        loader: require.resolve("react-docgen-typescript-loader"),
+        options: {
+          // 去掉原生属性的添加
+          shouldExtractLiteralValuesFromEnum: true,
+          // 这里是过滤不添加 react 中的一些属性
+          propFilter: (prop) => {
+            if (prop.parent) {
+              return !prop.parent.fileName.includes('node_modules')
+            }
+            return true            
+          }
+        }
+      }
+    ]
+  });
+
+  config.resolve.extensions.push(".ts", ".tsx");
+
+  return config;
+};
+```
+
+我们发现我们导出的表格的属性并没有一些说明以及注释，需要使用 jsDoc 的模式来进行对 js进行注释，这样注释内容会被解析并展示出来：
+```js
+import React, { FC, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
+interface BaseButtionProps {
+  /**设置 Button 的样式 */
+  className?: string;
+  /**设置 Button 是否被禁用 */
+  disabled?: boolean;
+  /**设置 Button 的尺寸 */
+  size?: ButtonSize;
+  /**设置 Button 的类型 */
+  btnType?: ButtonType;
+  children: ReactNode;
+  /**设置链接 Button 的地址，仅在 btnType 为 link 有用 */
+  href?: string
+}
+/**
+ * 页面中最常用的按钮元素，适合于完成特定的交互
+ * 
+ * > ### 引用方法
+ *   
+ * ~~~js
+ * import { Button } from 'jiegiserUI'
+ * ~~~
+ * @param props 
+ */
+export const Button: FC<ButtonProps> = (props) => {
+}
+
+export default Button;
+```

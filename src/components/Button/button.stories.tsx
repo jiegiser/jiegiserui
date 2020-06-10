@@ -4,22 +4,25 @@ import { action } from '@storybook/addon-actions'
 
 import Button from './button'
 
+const marginAttribute: React.CSSProperties = {
+  marginTop: '20px',
+  marginRight: '15px'
+}
 const defaultButton = () => (
-  <Button onClick={action('clicked')}> default button </Button>
+  <Button onClick={action('clicked')} style={marginAttribute}> default button </Button>
 )
-
 const buttonWithSize = () => (
   <>
-    <Button size="lg"> large button </Button>
-    <Button size="sm"> small button </Button>
+    <Button size="lg" style={marginAttribute}> large button </Button>
+    <Button size="sm" style={marginAttribute}> small button </Button>
   </>
 )
 
 const buttonWithType = () => (
   <>
-    <Button btnType="primary"> primary button </Button>
-    <Button btnType="danger"> danger button </Button>
-    <Button btnType="link" href="https://google.com"> link button </Button>
+    <Button btnType="primary" style={marginAttribute}> primary button </Button>
+    <Button btnType="danger" style={marginAttribute}> danger button </Button>
+    <Button btnType="link" href="https://baidu.com" style={marginAttribute}> link button </Button>
   </>
 )
 storiesOf('Button Component', module)

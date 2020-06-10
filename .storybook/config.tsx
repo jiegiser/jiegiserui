@@ -15,8 +15,10 @@ const storyWrapper = (stroyFn: any) => (
     {stroyFn()}
   </div>
 )
+// 添加装饰器
 addDecorator(storyWrapper)
 addDecorator(withInfo)
+// 添加 info 参数
 addParameters({info: { inline: true, header: false}})
 const loaderFn = () => {
   const allExports = [require('../src/welcome.stories.tsx')];
