@@ -454,3 +454,55 @@ addDecorator(CenterDecorator);
 
 > 更多 addons ：https://storybook.js.org/addons/
 > https://storybook.js.org/docs/addons/introduction/#1-decorators
+
+### storybook/addons-info 插件的使用
+这个插件就是显示组件的一些信息，还可以进行复制组件代码，首先进行安装：
+npm i -D @storybook/addon-info 支持 ts： npm install --save @types/storybook__addon-info
+
+> https://github.com/storybookjs/storybook/tree/release/3.4/addons/info
+使用：
+```ts
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import { withInfo } from '@storybook/addon-info'
+import Button from './button'
+
+const defaultButton = () => (
+  <Button onClick={action('clicked')}>default button</Button>
+)
+storiesOf('Button Component', module)
+  // 使用
+  .addDecorator(withInfo)
+  // 修改属性--直接链式操作
+  .addParameters({
+    info: 'this is a very niece component',
+    inline: true
+  })
+  .add('默认 Button', defaultButton)
+```
+
+注意他的 info 属性支持很多语法，比如 markdown 语法，以及可以进行写脚本：
+
+```js
+  .addDecorator(withInfo)
+  .addParameters({
+    info: `
+      this is a very niece component
+      ### this is a header
+      ~~~js
+        const a = 'hello'
+      ~~~
+    `,
+    inline: true
+  })
+```
+也可以在 add 方法的第三个参数添加属性信息：
+```js
+  .add('不同尺寸的 Button', buttonWithSize, {
+    inline: false
+  })
+```
+
+### react-docgen
+一个文档生成器，

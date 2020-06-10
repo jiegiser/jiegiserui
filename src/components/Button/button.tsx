@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react'
 import classNames from 'classnames'
 export type ButtonSize = 'lg' | 'sm'
 export type ButtonType = 'primary' | 'default' | 'danger' | 'link'
@@ -8,17 +8,17 @@ interface BaseButtionProps {
   disabled?: boolean;
   size?: ButtonSize;
   btnType?: ButtonType;
-  children: React.ReactNode;
+  children: ReactNode;
   href?: string
 }
 
 // 联合类型
-type NativeButtonProps = BaseButtionProps & React.ButtonHTMLAttributes<HTMLElement>
-type AnchorButtonProps = BaseButtionProps & React.AnchorHTMLAttributes<HTMLElement>
+type NativeButtonProps = BaseButtionProps & ButtonHTMLAttributes<HTMLElement>
+type AnchorButtonProps = BaseButtionProps & AnchorHTMLAttributes<HTMLElement>
 // 两种类型的按钮 a 或者 button 的属性不一定两种都需要，需要变为可选属性，使用 Partial
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
-const Button: React.FC<ButtonProps> = (props) => {
+export const Button: FC<ButtonProps> = (props) => {
   // props 中，取出所有剩余的属性 ...restProps
   const { 
     btnType,
@@ -64,4 +64,4 @@ Button.defaultProps = {
   btnType: 'default'
 }
 
-export default Button
+export default Button;
