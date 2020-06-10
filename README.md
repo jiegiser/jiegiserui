@@ -584,3 +584,14 @@ export const Button: FC<ButtonProps> = (props) => {
 
 export default Button;
 ```
+### ts 的 Omit
+
+Omit 是用来移除或者忽略接口中的一个属性：
+
+比如我们自定义的组件有一个 size 属性，但是我们还需要给用户去自定义更多的 html 原生的更多属性，所以需要继承 InputHTMLAttributes， 但是该属性有一个 size 属性，所以这个时候我们需要忽略这个属性，或者修改我们自身定义的属性名：
+```ts
+// Omit 第一个参数是 interface ，第二个是需要忽略的属性名
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size'> {
+  size?: InputSize
+}
+```
