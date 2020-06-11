@@ -7,7 +7,7 @@ interface LakerPlayerProps {
   number: number
 }
 const SimpleComplete = () => {
-  const lakers = ['bradley', 'pope', 'caruso', 'cook', 'cousins', 'james', 'AD', 'green', 'howard', 'kuzma', 'McGee', 'rando']
+  // const lakers = ['bradley', 'pope', 'caruso', 'cook', 'cousins', 'james', 'AD', 'green', 'howard', 'kuzma', 'McGee', 'rando']
 
   const lakersWithNumber = [
     {value: 'bradley', number: 11},
@@ -38,7 +38,7 @@ const SimpleComplete = () => {
   }
   return (
     <AutoComplete
-      fetchSubbestions={handleFetch}
+      fetchSuggestions={handleFetch}
       onSelect={action('selected')}
       renderOption={renderOption}
     />
@@ -55,18 +55,18 @@ const GithubComplete = () => {
       })
   }
 
-  const renderOption = (item: DataSourceType) => {
-    const itemWithGithub = item as DataSourceType<LakerPlayerProps>
-    return (
-      <>
-        <h2>Name: {itemWithGithub.value}</h2>
-        <p>url: {itemWithGithub.number}</p>
-      </>
-    )
-  }
+  // const renderOption = (item: DataSourceType) => {
+  //   const itemWithGithub = item as DataSourceType<LakerPlayerProps>
+  //   return (
+  //     <>
+  //       <h2>Name: {itemWithGithub.value}</h2>
+  //       <p>url: {itemWithGithub.number}</p>
+  //     </>
+  //   )
+  // }
   return (
     <AutoComplete
-      fetchSubbestions={handleFetchGithub}
+      fetchSuggestions={handleFetchGithub}
       onSelect={action('selected')}
     />
   )
