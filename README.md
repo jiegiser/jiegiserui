@@ -595,3 +595,18 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
   size?: InputSize
 }
 ```
+
+### 指定运行测试用例
+
+可以使用命令  npm test -- -t "auto" 来只运行指定的测试用例，注意如果测试用例为 autoComplete.test.tsx，就写成 npm test -- -t "auto" 是可以匹配到的。
+
+### Fetch
+缺点：
+- 只对网路请求报错，对 400，500 都当做成功的请求
+- 默认不会带 cookie
+- 不支持 abort，不支持超时控制
+- 没有办法原生检测请求的进度
+
+### mock server
+- https://jsonplaceholder.typicode.com/
+- https://designer.mocky.io/design
