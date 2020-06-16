@@ -610,3 +610,36 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
 ### mock server
 - https://jsonplaceholder.typicode.com/
 - https://designer.mocky.io/design
+
+
+### useState 更新数组对象
+
+我们一般使用 useState 更新数据时，直接使用它返回的第二个方法参数进行修改；因为这个方法更新数据是一个异步的过程；
+我们如果想要实时获取更新后的数据，可以在第二个方法中，传入一个函数进行修改：
+注意更新的时候是返回一个新的对象，而不是对原有的进行修改。
+```ts
+const [ fileList, setFileList] = useState<UploadFile[]>([])
+// setFileList
+updateFileList(_file, {
+  percent: percentage,
+  status: 'uploading'
+})
+// 如果直接使用 setFileList 更新数据，获取到的是最后一次更新的结果
+// _file.percent = percentage
+// _file.status = 'uploading'
+// setFileList([_file])
+
+// {...file, ...updateobj} 返回替换属性后的新的对象
+// 第一个参数为需要更新的文件，第二个参数是需要更新的属性， partial 的意思是更新的属性为 UploadFile 中的可选的一些属性，并不是所有的都更新
+const updateFileList = (updateFile: UploadFile, updateobj: Partial<UploadFile>) => {
+  setFileList(prevList => {
+    return prevList.map(file => {
+      if (file.uid === updateFile.uid) {
+        return {...file, ...updateobj}
+      } else {
+        return file
+      }
+    })
+  })
+}
+```

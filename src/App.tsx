@@ -15,6 +15,7 @@ const App: React.FC = () => {
       })
   }, [])
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // 选择的文件
     const files = e.target.files
     if (files) {
       const uploadedFile = files[0]
