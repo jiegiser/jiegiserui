@@ -1,7 +1,8 @@
 import React, { FC, useRef, ChangeEvent, useState } from 'react'
 import axios from 'axios'
 import UploadList from './uploadList'
-import Button from '../Button/button'
+// import Button from '../Button/button'
+import Dragger from './dragger'
 
 export type UploadFilesStatus = 'ready' | 'uploading' | 'success' | 'error'
 export interface UploadFile {
@@ -24,6 +25,17 @@ export interface UploadProps {
   onError?: (err: any, file: File) => void
   onChange?: (file: File) => void
   onRemove?: (file: UploadFile) => void
+  headers?: {[key: string]: any}
+  name?: string
+  data?: { [key: string]: any }
+  /**发送请求时是否携带 cookie 信息 */
+  withCredentials?: boolean
+  /**对上传的文件类型进行限制 */
+  accept?: string
+  /**是否支持多文件上传 */
+  multiple?: boolean
+  /**是否开启拖拽上传 */
+  drag?: boolean
 }
 
 export const Upload: FC<UploadProps> = (props) => {
@@ -35,7 +47,15 @@ export const Upload: FC<UploadProps> = (props) => {
     onSuccess,
     onError,
     onChange,
-    onRemove
+    onRemove,
+    name,
+    headers,
+    data,
+    withCredentials,
+    accept,
+    multiple,
+    drag,
+    children
   } = props
   const fileInput = useRef<HTMLInputElement>(null)
   const [ fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
@@ -104,13 +124,29 @@ export const Upload: FC<UploadProps> = (props) => {
       percent: 0,
       raw: file
     }
-    setFileList([_file, ...fileList])
+    // bug 如果上传多个文件，最后获取的 _file 是最后一个文件，改变 fileList 是异步的操作，这里需要改成回调函数的方式
+    // setFileList([_file, ...fileList])
+    setFileList(prevList => {
+      return [_file, ...prevList]
+    })
     const formData = new FormData()
-    formData.append(file.name, file)
+    // 发送给后台需要自定义上传额外参数
+    // 下面这个键是不能改变的
+    // formData.append(file.name, file)
+    formData.append(name || 'file', file)
+    // 将用户传入的额外参数发送给后台
+    if (data) {
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key])
+      })
+    }
+    // 需要自定义 header
     axios.post(action, formData, {
       headers: {
+        ...headers,
         'Content-type': 'multipart/form-data'
       },
+      withCredentials,
       onUploadProgress: (e) => {
         let percentage = Math.round((e.loaded * 100) / e.total) || 0
         if (percentage < 100) {
@@ -149,19 +185,33 @@ export const Upload: FC<UploadProps> = (props) => {
   }
   return (
     <div className="jiegiser-upload-component">
-      <Button
+      {/* 不使用 button 来代替触发上传，用户可以自定义 */}
+      {/* <Button
         btnType="primary"
         onClick={handleClick}
       >
         Upload File
-      </Button>
-      <input
-        className="jiegiser-file-input"
-        style={{display: 'none'}}
-        ref={fileInput}
-        onChange={handleFileChange}
-        type="file"
-      />
+      </Button> */}
+      <div className="jiegiser-upload-input"
+        style={{display: 'inline-block'}}
+        onClick={handleClick}
+      >
+        {drag ? 
+          <Dragger onFile={(files) => {uploadFiles(files)}}>
+            {children}
+          </Dragger>:
+          children
+        }
+        <input
+          className="jiegiser-file-input"
+          style={{display: 'none'}}
+          ref={fileInput}
+          onChange={handleFileChange}
+          type="file"
+          accept={accept}
+          multiple={multiple}
+        />
+      </div>
       <UploadList
         fileList={fileList}
         onRemove={handelRemove}
@@ -169,4 +219,8 @@ export const Upload: FC<UploadProps> = (props) => {
     </div>
   )
 }
+Upload.defaultProps = {
+  name: 'file'
+}
+
 export default Upload;
