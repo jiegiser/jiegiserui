@@ -673,3 +673,35 @@ describe('test upload component', () => {
       name: 'test.png'
     }))
 ```
+
+### js 模块化
+以前的 js 就是通过引入不同的文件，到后来通过自执行函数，来定义全局变量，到现在的 commjs、amd、es6 module：
+```js
+// common.js
+const bar = require('./bar')
+// 模块产出
+module.exports = function () {
+  // ...
+}
+
+// AMD -- 使用 require.js 才能在浏览器运行
+define(function (require) {
+  // 通过相对路径获得依赖模块
+  const bar = require('./bar')
+  // 模块产出
+  return function () {
+    // ...
+  }
+})
+
+// es6 module
+// 通过相对路径获得依赖模块
+import bar = from './bar'
+// 模块产出
+export default function() {
+  // ...
+}
+```
+
+### 创建组件库模块入口文件
+webpack 支持 package.json 中的 module 字段，这样就可以启用 tree shake 机制。
