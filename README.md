@@ -643,3 +643,33 @@ const updateFileList = (updateFile: UploadFile, updateobj: Partial<UploadFile>) 
   })
 }
 ```
+
+### jest mock 一个库
+比如我们 mock 一下 axios 库：
+```ts
+import axios from 'axios'
+// 将 axios 转换为测试的mocke对象
+const mockedAxios = axios as jest.Mocked<typeof axios>
+
+describe('test upload component', () => {
+  it('upload process should works file', async () => {
+    // 第一种方法
+    // mockedAxios.post.mockImplementation(() => {
+    //   return Promise.resolve({'data': 'cool'})
+    // })
+    // 第二种方法
+    mockedAxios.post.mockResolvedValue({'data': 'cool'})
+  })
+})
+```
+
+### jest 测试 是否包含某些特定的属性
+
+我们在写测试的时候，不一定需要测试一个属性中所有的属性是否存在，只需要测试某些特定的属性是否存在：可以使用 expect.objectContaining 以及 toHaveBeenCalledWith 结合使用：
+```ts
+    expect(testProps.onRemove).toHaveBeenCalledWith(expect.objectContaining({
+      raw: testFile,
+      status: 'success',
+      name: 'test.png'
+    }))
+```
