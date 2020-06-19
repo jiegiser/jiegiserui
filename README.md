@@ -704,4 +704,71 @@ export default function() {
 ```
 
 ### 创建组件库模块入口文件
-webpack 支持 package.json 中的 module 字段，这样就可以启用 tree shake 机制。
+webpack 支持 package.json 中的 module 字段，这样就可以启用 tree shake 机制。我们的项目默认入口文件是 index.tsx 。修改：
+
+```ts
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
+
+export { default as Button } from './components/Button'
+export { default as Menu } from './components/Menu'
+export { default as AutoComplete } from './components/AutoComplete'
+export { default as Icon } from './components/Icon'
+export { default as Input } from './components/Input'
+export { default as Progress } from './components/Progress'
+export { default as Transition } from './components/Transition'
+export { default as Upload } from './components/Upload'
+
+```
+这里有一些问题，比如，我们的 menu 组件我们新建了一个 index.tsx 文件用于导出组件：
+因为这个组件有两个子组件，也是在 Menu 组件里面使用，所以将 Item 以及 SubItem 组件导出为 Menu 组件的属性，类似 Menu.item 这样使用
+```ts
+import { FC } from 'react'
+import Menu, { MenuProps } from './menu'
+import SubMenu, { SubMenuProps } from './subMenu' 
+import MenuItem, { MenuItemProps } from './menuItem'
+
+export type IMenuComponent = FC<MenuProps> & {
+  Item: FC<MenuItemProps>,
+  SubItem: FC<SubMenuProps>
+}
+
+const TransMenu = Menu as IMenuComponent
+
+TransMenu.Item = MenuItem
+TransMenu.SubItem = SubMenu
+
+export default TransMenu
+```
+
+在根路径下面新建一个 tsconfig.build.json 文件，用于配置打包环境的 ts 配置：
+```json
+{
+  "compilerOptions": {
+    "outDir": "build", // 编译好的文件输出路径
+    "module": "esnext", // 输出的 mudule 类型
+    "target": "es5", // 确定编译后的 es 版本
+    "declaration": true, // 对每一个 ts 文件生成 .d.ts 类型注释文件
+    "jsx": "react", // 指定 jsx 的类型
+    "moduleResolution": "Node", // 配置模块的加载方式
+    "allowSyntheticDefaultImports": true // 支持 default import 方式
+  },
+  // 需要编译的文件
+  "include": [
+    "src"
+  ],
+  // 不编译的文件
+  "exclude": [
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx"
+  ]
+}
+```
+
+然后在 package.json 中添加编译 ts ，可以指定 ts config 文件：
+```json
+  "scripts": {
+    "build-ts": "tsc -p tsconfig.build.json",
+  },
+```
