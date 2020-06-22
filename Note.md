@@ -800,7 +800,6 @@ export default TransMenu
 对于版本号，具体可以查看这个语义化版本的规范：https://semver.org/lang/zh-CN/
 ```json
 {
-{
   "name": "jiegiserui",
   "version": "0.1.0",
   "description": "React components library",
