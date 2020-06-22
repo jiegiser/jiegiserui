@@ -21,6 +21,7 @@ addDecorator(withInfo)
 // 添加 info 参数
 addParameters({info: { inline: true, header: false}})
 const loaderFn = () => {
+  // 返回一个数组将 welcome 设置为第一个
   const allExports = [require('../src/welcome.stories.tsx')];
   const req = require.context('../src/components', true, /\.stories\.tsx$/);
   req.keys().forEach(fname => allExports.push(req(fname)));

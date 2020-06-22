@@ -896,7 +896,33 @@ https://create-react-app.dev/docs/running-tests/#continuous-integration 但是�
 ```json
   "husky": {
     "hooks": {
-      "pre-commit": "npm tun test:nowatch && npm run lint"
+      "pre-commit": "npm run test:nowatch && npm run lint"
     }
   }
+```
+
+### CI - 持续集成、CD - 持续交付、持续部署
+#### CI - 持续集成
+
+- 频繁的将代码集成到主干（master）
+- 快速发现错误
+- 防止分支大幅偏离主干
+
+#### CD - 持续交付、持续部署
+- 频繁的将软件的新版本，交付给质量团队或者用户
+- 代码通过评审以后，自动部署到生产环境
+
+### 使用 travis 自动运行测试
+
+> https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+
+新建 .travis.yml 文件，添加下面的配置：
+添加 cache 选项是因为，每次进行集成 npm install or npm ci ，设置缓存，下次就不需要重新安装所有的依赖。
+```shell
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+  - node_modules
 ```
