@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build", // 编译好的文件输出路径
+    "outDir": "dist", // 编译好的文件输出路径
     "module": "esnext", // 输出的 mudule 类型
     "target": "es5", // 确定编译后的 es 版本
     "declaration": true, // 对每一个 ts 文件生成 .d.ts 类型注释文件
