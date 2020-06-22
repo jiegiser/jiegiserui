@@ -888,7 +888,7 @@ https://create-react-app.dev/docs/running-tests/#continuous-integration 但是�
   "scripts": {
     "test:onwatch": "cross-env CI=true react-scripts test",
     // 添加生命周期函数，在发布之前运行 eslint 检查以及 test 然后运行 build
-    "prepublish": "npm run test:nowatch && npm run lint && npm run build"
+    "prepublishOnly": "npm run test:nowatch && npm run lint && npm run build"
   }
 ```
 使用 husky 库来进行 pre-commit 阶段做代码检查，它会在我们项目根目录下面的 .git/hooks 文件夹下面创建 pre-commit、pre-push 等 hooks。这些 hooks 可以让我们直接在 package.json 的 script 里运行我们想要在某个 hook 阶段执行的命令。
