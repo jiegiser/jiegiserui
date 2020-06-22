@@ -876,3 +876,27 @@ export default TransMenu
     "typescript": "^3.7.5"
   }
 ```
+在项目打包发布时候添加 eslit 检查以及 test 的测试，防止将有 bug 的代码发布到 npm 上，首先添加一个 eslint 检查的命令：
+```json
+  "scripts": {
+    "lint": "eslint --ext js,ts,tsx src --max-warnings 5",
+  }
+```
+添加测试的时候，我们不能使用自带的 test 命令，因为那个命令不能很好的反馈测试结果，他是一个可交互的命令行，可以设置 CI 为 true 让所有测试返回结果：
+https://create-react-app.dev/docs/running-tests/#continuous-integration 但是，需要在不同的系统设置。我们可以使用 cross-env (跨平台设置环境变量) 库来解决这个问题；首先进行安装 npm install cross-env --save-dev；然后添加命令：
+```json
+  "scripts": {
+    "test:onwatch": "cross-env CI=true react-scripts test",
+    // 添加生命周期函数，在发布之前运行 eslint 检查以及 test 然后运行 build
+    "prepublish": "npm run test:nowatch && npm run lint && npm run build"
+  }
+```
+使用 husky 库来进行 pre-commit 阶段做代码检查，它会在我们项目根目录下面的 .git/hooks 文件夹下面创建 pre-commit、pre-push 等 hooks。这些 hooks 可以让我们直接在 package.json 的 script 里运行我们想要在某个 hook 阶段执行的命令。
+安装： npm install husky --save-dev，同样设置在代码提交之前检查 test 以及 eslint 是否通过，在 package.json 中添加配置：
+```json
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm tun test:nowatch && npm run lint"
+    }
+  }
+```
