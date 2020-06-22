@@ -926,3 +926,20 @@ cache:
   directories:
   - node_modules
 ```
+
+### 使用 travis 自动发布文档页面
+
+在新增 .travis.yml 文件，下面配置：
+
+注意还需要设置 github token，在 github 中生成一个 token，然后填到 travis 中设置环境变量。
+```shell
+script:
+  - npm run build-storybook
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $github_token
+  local_dir: storybook-static // 需要上传的文件夹
+  on:
+    branch: master
+```
